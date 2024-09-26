@@ -11,6 +11,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: 'raw-loader',
+      },
+      {
         test: /\.scss$/,
         use: [
           'style-loader',
