@@ -1,0 +1,59 @@
+.survey-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.survey-header {
+  margin-bottom: 20px;
+}
+
+.survey-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.survey-form label {
+  margin-bottom: 5px;
+}
+
+.survey-form input, .survey-form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.survey-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.survey-header {
+  margin-bottom: 20px;
+}
+
+.survey-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.survey-form label {
+  margin-bottom: 5px;
+}
+
+.survey-form input, .survey-form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/*# sourceMappingURL=detroitusabilitysurvey.css.map */

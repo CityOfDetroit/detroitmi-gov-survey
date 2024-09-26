@@ -1,4 +1,5 @@
-import styles from './styles/detroitusabilitysurvey.css';
+import bootstrapStyles from './styles/css/bootstrap.base.css';
+import componentStyles from './styles/css/survey/detroitusabilitysurvey.css';
 
 class DetroitUsabilitySurvey extends HTMLElement {
   constructor() {
@@ -10,6 +11,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
       <div class="survey-container">
         <div class="survey-header">
           <h2>Share Your Thoughts</h2>
+          <p>Your feedback is anonymous, and we will use is to improve our website.</p>
         </div>
         <form class="survey-form">
           <!-- Form content goes here -->
@@ -21,7 +23,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
     // Apply styles from the imported SCSS
     const style = document.createElement('style');
-    style.textContent = styles;
+    style.textContent = `${bootstrapStyles}\n${componentStyles}`;
     this.shadowRoot.appendChild(style);
   }
 
