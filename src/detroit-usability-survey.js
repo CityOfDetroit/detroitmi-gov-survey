@@ -94,7 +94,11 @@ class DetroitUsabilitySurvey extends HTMLElement {
         (res) => {console.error(res)}
       );
     }
-    this.renderNavigationButtons();
+    if (surveyData[stepNum].isFinalStep) {
+      this.renderNavigationButtons();
+    } else {
+      this.changeStep(1);
+    }
   }
 
   handleSubmit() {
