@@ -22,8 +22,8 @@ class DetroitUsabilitySurvey extends HTMLElement {
           <!-- Form content goes here -->
         </div>
         <div class="survey-navigation">
-          <button id="prevBtn" disabled>Previous</button>
-          <button id="nextBtn">Next</button>
+          <button id="prevBtn" style="display: none;">Previous</button>
+          <button id="nextBtn" style="display: none;">Next</button>
         </div>
       </div>
     `;
@@ -51,6 +51,11 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.render(surveyData);
   }
 
+  updateNavigationButtons() {
+    this.prevBtn.style.display = this.currentStep === 0 ? 'none' : 'inline-block';
+    this.nextBtn.style.display = this.surveyResponse[this.currentStep] ? 'inline-block' : 'none';
+  }
+
   handleFormChange(stepNum, value) {
     this.surveyResponse[stepNum] = value;
     if (surveyData[stepNum].isPosting) {
@@ -61,6 +66,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
         (res) => {console.error(res)}
       );
     }
+    this.updateNavigationButtons();
   }
 
   render(surveyData) {
@@ -96,9 +102,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
       }
     }
 
-    // Update navigation buttons
-    this.prevBtn.disabled = this.currentStep === 0;
-    this.nextBtn.disabled = this.currentStep === surveyData.length - 1;
+    this.updateNavigationButtons();
   }
 }
 
