@@ -24,6 +24,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
         <div class="survey-navigation">
           <button id="prevBtn" style="display: none;">Previous</button>
           <button id="nextBtn" style="display: none;">Next</button>
+          <button id="submitBtn" style="display: none;">Submit</button>
         </div>
       </div>
     `;
@@ -37,9 +38,11 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
     this.prevBtn = this.shadowRoot.querySelector('#prevBtn');
     this.nextBtn = this.shadowRoot.querySelector('#nextBtn');
+    this.submitBtn = this.shadowRoot.querySelector('#submitBtn');
 
     this.prevBtn.addEventListener('click', () => this.changeStep(-1));
     this.nextBtn.addEventListener('click', () => this.changeStep(1));
+    this.submitBtn.addEventListener('click', () => this.handleSubmit());
   }
 
   connectedCallback() {
@@ -53,7 +56,14 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
   updateNavigationButtons() {
     this.prevBtn.style.display = this.currentStep === 0 ? 'none' : 'inline-block';
-    this.nextBtn.style.display = this.surveyResponse[this.currentStep] ? 'inline-block' : 'none';
+
+    if (surveyData[this.currentStep].isFinalStep) {
+      this.submitBtn.style.display = 'inline-block';
+      this.nextBtn.style.display = 'none';
+    } else {
+      this.submitBtn.style.display = 'none';
+      this.nextBtn.style.display = this.surveyResponse[this.currentStep] ? 'inline-block' : 'none';
+    }
   }
 
   handleFormChange(stepNum, value) {
@@ -67,6 +77,15 @@ class DetroitUsabilitySurvey extends HTMLElement {
       );
     }
     this.updateNavigationButtons();
+  }
+
+  handleSubmit() {
+    Connector.start(
+      this.surveyResponse, 
+      {'Auth-Token': 'foo'}, 
+      (res) => {console.info(res)}, 
+      (res) => {console.error(res)}
+    );
   }
 
   render(surveyData) {
