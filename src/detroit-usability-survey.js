@@ -115,7 +115,32 @@ class DetroitUsabilitySurvey extends HTMLElement {
     }
   }
 
+  renderConfirmation() {
+    const surveyContainer = this.shadowRoot.querySelector('.survey-container')
+    if (surveyContainer.contains(this.formContainer)) {
+      surveyContainer.removeChild(this.formContainer);
+    }
+
+    if (surveyContainer.contains(this.navigationContainer)) {
+      surveyContainer.removeChild(this.navigationContainer);
+    }
+
+    const confirmation = document.createElement('div');
+    confirmation.classList.add('survey-confirmation');
+    confirmation.innerHTML = `
+      <p class="fw-bold">Thank you for sharing your feedback!</p>
+      <p>Your responses have been submitted.</p>
+    `;
+    surveyContainer.appendChild(confirmation);
+  }
+
   render() {
+    if (this.isSubmitted) {
+      this.renderConfirmation();
+      return;
+    }
+
+    // Otherwise, continue on rendering the survey.
     this.formContainer.innerHTML = ''; // Clear previous form content
 
     const item = surveyData[this.currentStep];
