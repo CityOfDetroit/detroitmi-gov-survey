@@ -71,7 +71,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
       this.navigationContainer.removeChild(this.prevBtn);
     }
 
-    if (isFinalStep) {
+    if (isFinalStep && hasResponse) {
       this.navigationContainer.appendChild(this.submitBtn);
     } else if (this.navigationContainer.contains(this.submitBtn)) {
       this.navigationContainer.remove(this.submitBtn);
