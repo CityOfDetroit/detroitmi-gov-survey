@@ -12,6 +12,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.surveyResponse = {};
 
     const template = document.createElement('template');
+    // TODO: Audit the HTML for accessibility.
     template.innerHTML = `
       <div class="survey-container">
         <div class="survey-header">
@@ -38,7 +39,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
     this.prevBtn = this.createButton('prevBtn', 'secondary', 'Previous', () => this.changeStep(-1));
     this.nextBtn = this.createButton('nextBtn', 'primary', 'Next', () => this.changeStep(1));
-    this.submitBtn = this.createButton('submitBtn', 'primary', 'Submit', () => this.handleSubmit());
+    this.submitBtn = this.createButton('submitBtn', 'primary', 'Submit Feedback', () => this.handleSubmit());
   }
 
   connectedCallback() {
