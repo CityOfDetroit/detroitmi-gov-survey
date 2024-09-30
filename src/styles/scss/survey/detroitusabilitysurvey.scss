@@ -3,6 +3,10 @@
   border: 1px solid #000;
   max-width: 600px;
   margin: 0 auto;
+
+  #prevBtn {
+    margin-right: 1em;
+  }
 }
 
 .survey-header {
@@ -12,8 +16,5 @@
 .survey-form {
   display: flex;
   flex-direction: column;
-}
-
-.survey-form label {
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }

@@ -4,6 +4,9 @@
   max-width: 600px;
   margin: 0 auto;
 }
+.survey-container #prevBtn {
+  margin-right: 1em;
+}
 
 .survey-header {
   margin-bottom: 20px;
@@ -12,10 +15,7 @@
 .survey-form {
   display: flex;
   flex-direction: column;
-}
-
-.survey-form label {
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 /*# sourceMappingURL=detroitusabilitysurvey.css.map */

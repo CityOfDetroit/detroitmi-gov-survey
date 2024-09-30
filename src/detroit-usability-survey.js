@@ -36,19 +36,20 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
     this.navigationContainer = this.shadowRoot.querySelector('.survey-navigation');
 
-    this.prevBtn = this.createButton('prevBtn', 'Previous', () => this.changeStep(-1));
-    this.nextBtn = this.createButton('nextBtn', 'Next', () => this.changeStep(1));
-    this.submitBtn = this.createButton('submitBtn', 'Submit', () => this.handleSubmit());
+    this.prevBtn = this.createButton('prevBtn', 'secondary', 'Previous', () => this.changeStep(-1));
+    this.nextBtn = this.createButton('nextBtn', 'primary', 'Next', () => this.changeStep(1));
+    this.submitBtn = this.createButton('submitBtn', 'primary', 'Submit', () => this.handleSubmit());
   }
 
   connectedCallback() {
     this.render(surveyData);
   }
 
-  createButton(id, text, onClick) {
+  createButton(id, type, text, onClick) {
     const button = document.createElement('button');
     button.id = id;
     button.textContent = text;
+    button.classList.add('btn', `btn-${type}`);
     button.addEventListener('click', onClick);
     return button;
   }

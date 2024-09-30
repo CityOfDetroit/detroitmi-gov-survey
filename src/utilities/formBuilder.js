@@ -26,23 +26,29 @@ function createRadioElement(stepNum, data, currentValue, handleUpdate) {
   const container = document.createElement('div');
   fieldset.appendChild(container);
   data.options.forEach(option => {
+    const optContainer = document.createElement('div');
+    optContainer.classList.add('form-check');
+
     const optionID = `${data.id}-${option.value}`;
     const input = document.createElement('input');
     input.type = 'radio';
     input.id = optionID;
     input.name = data.id;
     input.value = option.value;
+    input.classList.add('form-check-input');
     if (option.value === currentValue) {
       input.checked = true;
     }
     input.addEventListener('change', () => {
       handleUpdate(stepNum, input.value);
     });
-    container.appendChild(input);
+    optContainer.appendChild(input);
     const label = document.createElement('label');
     label.htmlFor = optionID;
     label.textContent = option.label;
-    container.appendChild(label);
+    label.classList.add('form-check-label');
+    optContainer.appendChild(label);
+    container.appendChild(optContainer);
   });
   return form;
 }
@@ -71,6 +77,7 @@ function createSelectElement(stepNum, data, currentValue, handleUpdate) {
   const select = document.createElement('select');
   select.id = data.id;
   select.name = data.id;
+  select.classList.add('form-select');
   const defaultOption = document.createElement('option');
   defaultOption.value = '';
   defaultOption.textContent = '--Please select an option--';
