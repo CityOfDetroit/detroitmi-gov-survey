@@ -7,16 +7,22 @@ class DetroitUsabilitySurvey extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this.currentStep = 0;
+    this.surveyResponse = {};
 
     const template = document.createElement('template');
     template.innerHTML = `
       <div class="survey-container">
         <div class="survey-header">
           <h2>Share Your Thoughts</h2>
-          <p>Your feedback is anonymous, and we will use is to improve our website.</p>
+          <p>Your feedback is anonymous, and we will use it to improve our website.</p>
         </div>
         <div class="survey-form">
           <!-- Form content goes here -->
+        </div>
+        <div class="survey-navigation">
+          <button id="prevBtn" disabled>Previous</button>
+          <button id="nextBtn">Next</button>
         </div>
       </div>
     `;
@@ -27,30 +33,55 @@ class DetroitUsabilitySurvey extends HTMLElement {
     const style = document.createElement('style');
     style.textContent = `${bootstrapStyles}\n${componentStyles}`;
     this.shadowRoot.appendChild(style);
+
+    this.prevBtn = this.shadowRoot.querySelector('#prevBtn');
+    this.nextBtn = this.shadowRoot.querySelector('#nextBtn');
+
+    this.prevBtn.addEventListener('click', () => this.changeStep(-1));
+    this.nextBtn.addEventListener('click', () => this.changeStep(1));
   }
 
   connectedCallback() {
     this.render(surveyData);
   }
 
+  changeStep(step) {
+    this.currentStep += step;
+    this.render(surveyData);
+  }
+
   render(surveyData) {
     const formContainer = this.shadowRoot.querySelector('.survey-form');
-    
-    surveyData.forEach(item => {
+    formContainer.innerHTML = ''; // Clear previous form content
+
+    const item = surveyData[this.currentStep];
+    if (item) {
       switch(item.inputType) {
-        case 'radio':
-          const radioForm = createRadioElement(item);
+        case 'radio': {
+          const radioForm = createRadioElement(this.currentStep, item, (stepNum, value) => {
+            this.surveyResponse[stepNum] = value;
+            console.log('surveyResponse:', this.surveyResponse);
+          });
           formContainer.appendChild(radioForm);
           break;
-        case 'select':
-          const selectForm = createSelectElement(item);
+        }
+        case 'select': {
+          const selectForm = createSelectElement(this.currentStep, item, (stepNum, value) => { 
+            this.surveyResponse[stepNum] = value; 
+            console.log('surveyResponse:', this.surveyResponse);
+          });
           formContainer.appendChild(selectForm);
           break;
+        }
         default:
           console.error('Unknown input type:', item.inputType);
           break;
       }
-    });
+    }
+
+    // Update navigation buttons
+    this.prevBtn.disabled = this.currentStep === 0;
+    this.nextBtn.disabled = this.currentStep === surveyData.length - 1;
   }
 }
 
