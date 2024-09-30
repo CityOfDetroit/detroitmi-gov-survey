@@ -1,0 +1,114 @@
+[
+  {
+    "id": "discoverability",
+    "inputType": "radio",
+    "legendOrLabel": "Did you find what you were looking for on this page?",
+    "isPosting": true,
+    "isPostingFullForm": true,
+    "isFinalStep": false,
+    "options": [
+      {
+        "label": "Yes",
+        "value": 2
+      },
+      {
+        "label": "Partially",
+        "value": 2
+      },
+      {
+        "label": "No",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "ease",
+    "inputType": "radio",
+    "legendOrLabel": "How easy was it to find the information or services you were seeking on this page?",
+    "isPosting": true,
+    "isPostingFullForm": true,
+    "isFinalStep": false,
+    "options": [
+      {
+        "label": "Very Easy",
+        "value": 5
+      },
+      {
+        "label": "Easy",
+        "value": 4
+      },
+      {
+        "label": "Neutral",
+        "value": 3
+      },
+      {
+        "label": "Difficult",
+        "value": 2
+      },
+      {
+        "label": "Very Difficult",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "satisfaction",
+    "inputType": "radio",
+    "legendOrLabel": "How useful was the information on this page?",
+    "isPosting": true,
+    "isPostingFullForm": true,
+    "isFinalStep": false,
+    "options": [
+      {
+        "label": "Very Useful",
+        "value": 5
+      },
+      {
+        "label": "Useful",
+        "value": 4
+      },
+      {
+        "label": "Neutral",
+        "value": 3
+      },
+      {
+        "label": "Somewhat Useful",
+        "value": 2
+      },
+      {
+        "label": "Not Useful at All",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "purpose",
+    "inputType": "select",
+    "legendOrLabel": "What specifically were you looking for?",
+    "isPosting": true,
+    "isPostingFullForm": true,
+    "isFinalStep": true,
+    "options": [
+      {
+        "label": "Information about a City service (e.g. garbage collection, parking, housing assistance, and more)",
+        "value": "city_service"
+      },
+      {
+        "label": "Events or news",
+        "value": "events_news"
+      },
+      {
+        "label": "Contact information for a City department or service",
+        "value": "contact_info"
+      },
+      {
+        "label": "Information about job postings",
+        "value": "job_postings"
+      },
+      {
+        "label": "Something else not listed here",
+        "value": "other"
+      }
+    ]
+  }
+]

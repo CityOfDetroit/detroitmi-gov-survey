@@ -1,5 +1,7 @@
 import bootstrapStyles from './styles/css/bootstrap.base.css';
 import componentStyles from './styles/css/survey/detroitusabilitysurvey.css';
+import surveyData from './formData/usability-form.json';
+import {createRadioElement, createSelectElement} from './utilities/formBuilder.js';
 
 class DetroitUsabilitySurvey extends HTMLElement {
   constructor() {
@@ -13,9 +15,9 @@ class DetroitUsabilitySurvey extends HTMLElement {
           <h2>Share Your Thoughts</h2>
           <p>Your feedback is anonymous, and we will use is to improve our website.</p>
         </div>
-        <form class="survey-form">
+        <div class="survey-form">
           <!-- Form content goes here -->
-        </form>
+        </div>
       </div>
     `;
 
@@ -28,35 +30,26 @@ class DetroitUsabilitySurvey extends HTMLElement {
   }
 
   connectedCallback() {
-    const surveyData = this.getSurveyData();
     this.render(surveyData);
   }
 
-  getSurveyData() {
-    return [
-      { type: 'text', question: 'What is your name?' },
-      { type: 'email', question: 'What is your email?' },
-      { type: 'textarea', question: 'Tell us about yourself' }
-    ];
-  }
-
   render(surveyData) {
-    const form = this.shadowRoot.querySelector('.survey-form');
+    const formContainer = this.shadowRoot.querySelector('.survey-form');
     
     surveyData.forEach(item => {
-      const label = document.createElement('label');
-      label.textContent = item.question;
-    
-      let input;
-      if (item.type === 'text' || item.type === 'email') {
-        input = document.createElement('input');
-        input.type = item.type;
-      } else if (item.type === 'textarea') {
-        input = document.createElement('textarea');
+      switch(item.inputType) {
+        case 'radio':
+          const radioForm = createRadioElement(item);
+          formContainer.appendChild(radioForm);
+          break;
+        case 'select':
+          const selectForm = createSelectElement(item);
+          formContainer.appendChild(selectForm);
+          break;
+        default:
+          console.error('Unknown input type:', item.inputType);
+          break;
       }
-    
-      form.appendChild(label);
-      form.appendChild(input);
     });
   }
 }
