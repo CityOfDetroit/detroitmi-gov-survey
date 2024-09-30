@@ -22,9 +22,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
           <!-- Form content goes here -->
         </div>
         <div class="survey-navigation">
-          <button id="prevBtn" style="display: none;">Previous</button>
-          <button id="nextBtn" style="display: none;">Next</button>
-          <button id="submitBtn" style="display: none;">Submit</button>
+          <!-- Navigation buttons will be dynamically added here -->
         </div>
       </div>
     `;
@@ -36,17 +34,23 @@ class DetroitUsabilitySurvey extends HTMLElement {
     style.textContent = `${bootstrapStyles}\n${componentStyles}`;
     this.shadowRoot.appendChild(style);
 
-    this.prevBtn = this.shadowRoot.querySelector('#prevBtn');
-    this.nextBtn = this.shadowRoot.querySelector('#nextBtn');
-    this.submitBtn = this.shadowRoot.querySelector('#submitBtn');
+    this.navigationContainer = this.shadowRoot.querySelector('.survey-navigation');
 
-    this.prevBtn.addEventListener('click', () => this.changeStep(-1));
-    this.nextBtn.addEventListener('click', () => this.changeStep(1));
-    this.submitBtn.addEventListener('click', () => this.handleSubmit());
+    this.prevBtn = this.createButton('prevBtn', 'Previous', () => this.changeStep(-1));
+    this.nextBtn = this.createButton('nextBtn', 'Next', () => this.changeStep(1));
+    this.submitBtn = this.createButton('submitBtn', 'Submit', () => this.handleSubmit());
   }
 
   connectedCallback() {
     this.render(surveyData);
+  }
+
+  createButton(id, text, onClick) {
+    const button = document.createElement('button');
+    button.id = id;
+    button.textContent = text;
+    button.addEventListener('click', onClick);
+    return button;
   }
 
   changeStep(step) {
@@ -54,15 +58,28 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.render(surveyData);
   }
 
-  updateNavigationButtons() {
-    this.prevBtn.style.display = this.currentStep === 0 ? 'none' : 'inline-block';
+  renderNavigationButtons() {
+    this.navigationContainer.innerHTML = ''; // Clear previous buttons
 
-    if (surveyData[this.currentStep].isFinalStep) {
-      this.submitBtn.style.display = 'inline-block';
-      this.nextBtn.style.display = 'none';
-    } else {
-      this.submitBtn.style.display = 'none';
-      this.nextBtn.style.display = this.surveyResponse[this.currentStep] ? 'inline-block' : 'none';
+    const { isFinalStep } = surveyData[this.currentStep];
+    const hasResponse = !!this.surveyResponse[this.currentStep];
+
+    if (this.currentStep > 0) {
+      this.navigationContainer.appendChild(this.prevBtn);
+    } else if (this.navigationContainer.contains(this.prevBtn)) {
+      this.navigationContainer.removeChild(this.prevBtn);
+    }
+
+    if (isFinalStep) {
+      this.navigationContainer.appendChild(this.submitBtn);
+    } else if (this.navigationContainer.contains(this.submitBtn)) {
+      this.navigationContainer.remove(this.submitBtn);
+    }
+
+    if (!isFinalStep && hasResponse) {
+      this.navigationContainer.appendChild(this.nextBtn);
+    } else if (this.navigationContainer.contains(this.nextBtn)) {
+      this.navigationContainer.removeChild(this.nextBtn);
     }
   }
 
@@ -76,7 +93,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
         (res) => {console.error(res)}
       );
     }
-    this.updateNavigationButtons();
+    this.renderNavigationButtons();
   }
 
   handleSubmit() {
@@ -121,7 +138,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
       }
     }
 
-    this.updateNavigationButtons();
+    this.renderNavigationButtons();
   }
 }
 
