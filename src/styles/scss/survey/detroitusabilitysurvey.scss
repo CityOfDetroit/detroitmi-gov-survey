@@ -1,6 +1,6 @@
+@import '../variables';
+
 .survey-container {
-  padding: 20px;
-  border: 1px solid #000;
   max-width: 600px;
   margin: 0 auto;
 
@@ -13,12 +13,29 @@
   }
 }
 
+.btn-secondary {
+  border: 1px solid black;
+
+  &:hover {
+    border-color: black;
+  }
+}
+
 .survey-header {
-  margin-bottom: 20px;
+  padding: 20px;
+  background-color: $cod-pale-green;
+}
+
+.survey-body {
+  padding: 20px;
+  background-color: $cod-light-grey;
 }
 
 .survey-form {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+}
+
+.survey-navigation {
+  margin-top: 20px;
 }

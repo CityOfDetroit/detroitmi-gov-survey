@@ -20,11 +20,13 @@ class DetroitUsabilitySurvey extends HTMLElement {
           <p class="display-4 fw-bold">Share Your Thoughts</p>
           <p>Your feedback is anonymous, and we will use it to improve our website.</p>
         </div>
-        <div class="survey-form">
-          <!-- Form content goes here -->
-        </div>
-        <div class="survey-navigation">
-          <!-- Navigation buttons will be dynamically added here -->
+        <div class="survey-body">
+          <div class="survey-form">
+            <!-- Form content goes here -->
+          </div>
+          <div class="survey-navigation">
+            <!-- Navigation buttons will be dynamically added here -->
+          </div>
         </div>
       </div>
     `;
@@ -116,7 +118,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
   }
 
   renderConfirmation() {
-    const surveyContainer = this.shadowRoot.querySelector('.survey-container')
+    const surveyContainer = this.shadowRoot.querySelector('.survey-body')
     if (surveyContainer.contains(this.formContainer)) {
       surveyContainer.removeChild(this.formContainer);
     }
