@@ -58,18 +58,20 @@ class DetroitUsabilitySurvey extends HTMLElement {
     if (item) {
       switch(item.inputType) {
         case 'radio': {
-          const radioForm = createRadioElement(this.currentStep, item, (stepNum, value) => {
-            this.surveyResponse[stepNum] = value;
-            console.log('surveyResponse:', this.surveyResponse);
-          });
+          const radioForm = createRadioElement(this.currentStep, item, this.surveyResponse[this.currentStep], 
+            (stepNum, value) => {
+              this.surveyResponse[stepNum] = value;
+            }
+          );
           formContainer.appendChild(radioForm);
           break;
         }
         case 'select': {
-          const selectForm = createSelectElement(this.currentStep, item, (stepNum, value) => { 
-            this.surveyResponse[stepNum] = value; 
-            console.log('surveyResponse:', this.surveyResponse);
-          });
+          const selectForm = createSelectElement(this.currentStep, item, this.surveyResponse[this.currentStep],
+            (stepNum, value) => { 
+              this.surveyResponse[stepNum] = value; 
+            }
+          );
           formContainer.appendChild(selectForm);
           break;
         }

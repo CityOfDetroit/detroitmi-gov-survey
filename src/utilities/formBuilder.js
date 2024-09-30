@@ -12,10 +12,11 @@
  * @param {Array<Object>} data.options - The options for the radio input.
  * @param {string} data.options[].value - The value attribute for an option.
  * @param {string} data.options[].label - The label for an option.
+ * @param {string} currentValue - The current value entered by the user for this form.
  * @param {Function} handleUpdate - The callback function to handle form input changes.
  * @returns {HTMLElement} The constructed radio input element.
  */
-function createRadioElement(stepNum, data, handleUpdate) {
+function createRadioElement(stepNum, data, currentValue, handleUpdate) {
   const form = document.createElement('form');
   const fieldset = document.createElement('fieldset');
   form.appendChild(fieldset);
@@ -31,6 +32,9 @@ function createRadioElement(stepNum, data, handleUpdate) {
     input.id = optionID;
     input.name = data.id;
     input.value = option.value;
+    if (option.value === currentValue) {
+      input.checked = true;
+    }
     input.addEventListener('change', () => {
       handleUpdate(stepNum, input.value);
     });
@@ -53,10 +57,11 @@ function createRadioElement(stepNum, data, handleUpdate) {
  * @param {Array<Object>} data.options - The options for the select element.
  * @param {string} data.options[].value - The value attribute for an option.
  * @param {string} data.options[].label - The label for an option.
+ * @param {string} currentValue - The current value entered by the user for this form.
  * @param {Function} handleUpdate - The callback function to handle form input changes.
  * @returns {HTMLElement} The constructed select element.
  */
-function createSelectElement(stepNum, data, handleUpdate) {
+function createSelectElement(stepNum, data, currentValue, handleUpdate) {
   const form = document.createElement('form');
   const label = document.createElement('label');
   label.textContent = data.legendOrLabel;
@@ -74,6 +79,9 @@ function createSelectElement(stepNum, data, handleUpdate) {
     const opt = document.createElement('option');
     opt.value = option.value;
     opt.textContent = option.label;
+    if (option.value === currentValue) {
+      opt.selected = true;
+    }
     select.appendChild(opt);
   });
 

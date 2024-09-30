@@ -9,15 +9,15 @@
     "options": [
       {
         "label": "Yes",
-        "value": 2
+        "value": "2"
       },
       {
         "label": "Partially",
-        "value": 2
+        "value": "1"
       },
       {
         "label": "No",
-        "value": 0
+        "value": "0"
       }
     ]
   },
@@ -31,23 +31,23 @@
     "options": [
       {
         "label": "Very Easy",
-        "value": 5
+        "value": "5"
       },
       {
         "label": "Easy",
-        "value": 4
+        "value": "4"
       },
       {
         "label": "Neutral",
-        "value": 3
+        "value": "3"
       },
       {
         "label": "Difficult",
-        "value": 2
+        "value": "2"
       },
       {
         "label": "Very Difficult",
-        "value": 1
+        "value": "1"
       }
     ]
   },
@@ -61,23 +61,23 @@
     "options": [
       {
         "label": "Very Useful",
-        "value": 5
+        "value": "5"
       },
       {
         "label": "Useful",
-        "value": 4
+        "value": "4"
       },
       {
         "label": "Neutral",
-        "value": 3
+        "value": "3"
       },
       {
         "label": "Somewhat Useful",
-        "value": 2
+        "value": "2"
       },
       {
         "label": "Not Useful at All",
-        "value": 1
+        "value": "1"
       }
     ]
   },
