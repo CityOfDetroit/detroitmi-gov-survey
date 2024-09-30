@@ -10,6 +10,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this.currentStep = 0;
     this.surveyResponse = {};
+    this.isSubmitted = false;
 
     const template = document.createElement('template');
     // TODO: Audit the HTML for accessibility.
@@ -36,6 +37,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.shadowRoot.appendChild(style);
 
     this.navigationContainer = this.shadowRoot.querySelector('.survey-navigation');
+    this.formContainer = this.shadowRoot.querySelector('.survey-form');
 
     this.prevBtn = this.createButton('prevBtn', 'secondary', 'Previous', () => this.changeStep(-1));
     this.nextBtn = this.createButton('nextBtn', 'primary', 'Next', () => this.changeStep(1));
@@ -43,7 +45,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render(surveyData);
+    this.render();
   }
 
   createButton(id, type, text, onClick) {
@@ -58,6 +60,34 @@ class DetroitUsabilitySurvey extends HTMLElement {
   changeStep(step) {
     this.currentStep += step;
     this.render(surveyData);
+  }
+
+  handleFormChange(stepNum, value) {
+    this.surveyResponse[stepNum] = value;
+    if (surveyData[stepNum].isPosting) {
+      Connector.start(
+        this.surveyResponse, 
+        {'Auth-Token': 'foo'}, 
+        (res) => {console.info(res)}, 
+        (res) => {console.error(res)}
+      );
+    }
+    if (surveyData[stepNum].isFinalStep) {
+      this.renderNavigationButtons();
+    } else {
+      this.changeStep(1);
+    }
+  }
+
+  handleSubmit() {
+    this.isSubmitted = true;
+    Connector.start(
+      this.surveyResponse, 
+      {'Auth-Token': 'foo'}, 
+      (res) => {console.info(res)}, 
+      (res) => {console.error(res)}
+    );
+    this.render();
   }
 
   renderNavigationButtons() {
@@ -85,35 +115,8 @@ class DetroitUsabilitySurvey extends HTMLElement {
     }
   }
 
-  handleFormChange(stepNum, value) {
-    this.surveyResponse[stepNum] = value;
-    if (surveyData[stepNum].isPosting) {
-      Connector.start(
-        this.surveyResponse, 
-        {'Auth-Token': 'foo'}, 
-        (res) => {console.info(res)}, 
-        (res) => {console.error(res)}
-      );
-    }
-    if (surveyData[stepNum].isFinalStep) {
-      this.renderNavigationButtons();
-    } else {
-      this.changeStep(1);
-    }
-  }
-
-  handleSubmit() {
-    Connector.start(
-      this.surveyResponse, 
-      {'Auth-Token': 'foo'}, 
-      (res) => {console.info(res)}, 
-      (res) => {console.error(res)}
-    );
-  }
-
-  render(surveyData) {
-    const formContainer = this.shadowRoot.querySelector('.survey-form');
-    formContainer.innerHTML = ''; // Clear previous form content
+  render() {
+    this.formContainer.innerHTML = ''; // Clear previous form content
 
     const item = surveyData[this.currentStep];
     if (item) {
@@ -125,7 +128,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
             this.surveyResponse[this.currentStep], 
             this.handleFormChange.bind(this),
           );
-          formContainer.appendChild(radioForm);
+          this.formContainer.appendChild(radioForm);
           break;
         }
         case 'select': {
@@ -135,7 +138,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
             this.surveyResponse[this.currentStep], 
             this.handleFormChange.bind(this),
           );
-          formContainer.appendChild(selectForm);
+          this.formContainer.appendChild(selectForm);
           break;
         }
         default:
