@@ -22,6 +22,7 @@ function createRadioElement(stepNum, data, currentValue, handleUpdate) {
   form.appendChild(fieldset);
   const legend = document.createElement('legend');
   legend.textContent = data.legendOrLabel;
+  legend.classList.add('form-label', 'fw-bold');
   fieldset.appendChild(legend);
   const container = document.createElement('div');
   fieldset.appendChild(container);
@@ -72,6 +73,7 @@ function createSelectElement(stepNum, data, currentValue, handleUpdate) {
   const label = document.createElement('label');
   label.textContent = data.legendOrLabel;
   label.htmlFor = data.id;
+  label.classList.add('form-label', 'fw-bold');
   form.appendChild(label);
 
   const select = document.createElement('select');

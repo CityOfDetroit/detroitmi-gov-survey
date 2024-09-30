@@ -4,6 +4,9 @@
   max-width: 600px;
   margin: 0 auto;
 }
+.survey-container legend {
+  font-size: 1rem;
+}
 .survey-container #prevBtn {
   margin-right: 1em;
 }

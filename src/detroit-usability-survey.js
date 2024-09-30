@@ -15,7 +15,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     template.innerHTML = `
       <div class="survey-container">
         <div class="survey-header">
-          <h2>Share Your Thoughts</h2>
+          <p class="display-4 fw-bold">Share Your Thoughts</p>
           <p>Your feedback is anonymous, and we will use it to improve our website.</p>
         </div>
         <div class="survey-form">
