@@ -1,3 +1,4 @@
+import Connector from './utilities/Connector';
 import bootstrapStyles from './styles/css/bootstrap.base.css';
 import componentStyles from './styles/css/survey/detroitusabilitysurvey.css';
 import surveyData from './formData/usability-form.json';
@@ -50,6 +51,18 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.render(surveyData);
   }
 
+  handleFormChange(stepNum, value) {
+    this.surveyResponse[stepNum] = value;
+    if (surveyData[stepNum].isPosting) {
+      Connector.start(
+        this.surveyResponse, 
+        {'Auth-Token': 'foo'}, 
+        (res) => {console.info(res)}, 
+        (res) => {console.error(res)}
+      );
+    }
+  }
+
   render(surveyData) {
     const formContainer = this.shadowRoot.querySelector('.survey-form');
     formContainer.innerHTML = ''; // Clear previous form content
@@ -58,19 +71,21 @@ class DetroitUsabilitySurvey extends HTMLElement {
     if (item) {
       switch(item.inputType) {
         case 'radio': {
-          const radioForm = createRadioElement(this.currentStep, item, this.surveyResponse[this.currentStep], 
-            (stepNum, value) => {
-              this.surveyResponse[stepNum] = value;
-            }
+          const radioForm = createRadioElement(
+            this.currentStep, 
+            item, 
+            this.surveyResponse[this.currentStep], 
+            this.handleFormChange.bind(this),
           );
           formContainer.appendChild(radioForm);
           break;
         }
         case 'select': {
-          const selectForm = createSelectElement(this.currentStep, item, this.surveyResponse[this.currentStep],
-            (stepNum, value) => { 
-              this.surveyResponse[stepNum] = value; 
-            }
+          const selectForm = createSelectElement(
+            this.currentStep, 
+            item, 
+            this.surveyResponse[this.currentStep], 
+            this.handleFormChange.bind(this),
           );
           formContainer.appendChild(selectForm);
           break;

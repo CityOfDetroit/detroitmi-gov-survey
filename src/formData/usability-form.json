@@ -4,7 +4,6 @@
     "inputType": "radio",
     "legendOrLabel": "Did you find what you were looking for on this page?",
     "isPosting": true,
-    "isPostingFullForm": true,
     "isFinalStep": false,
     "options": [
       {
@@ -26,7 +25,6 @@
     "inputType": "radio",
     "legendOrLabel": "How easy was it to find the information or services you were seeking on this page?",
     "isPosting": true,
-    "isPostingFullForm": true,
     "isFinalStep": false,
     "options": [
       {
@@ -56,7 +54,6 @@
     "inputType": "radio",
     "legendOrLabel": "How useful was the information on this page?",
     "isPosting": true,
-    "isPostingFullForm": true,
     "isFinalStep": false,
     "options": [
       {
@@ -86,7 +83,6 @@
     "inputType": "select",
     "legendOrLabel": "What specifically were you looking for?",
     "isPosting": true,
-    "isPostingFullForm": true,
     "isFinalStep": true,
     "options": [
       {
