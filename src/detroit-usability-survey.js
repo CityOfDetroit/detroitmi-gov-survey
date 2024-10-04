@@ -10,6 +10,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this.currentStep = 0;
     this.surveyResponse = {};
+    this.isLoading = false;
     this.isSubmitted = false;
     this.surveyID = null;
 
@@ -65,15 +66,28 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.render(surveyData);
   }
 
+  handleSubmitSuccess(surveyID) {
+    this.surveyID = surveyID;
+    this.isLoading = false;
+  }
+
+  handleSubmitFailure(error) {
+    this.isLoading = false;
+    console.error(error);
+  }
+
   handleFormChange(stepNum, value) {
+    this.isLoading = true;
     this.surveyResponse[stepNum] = value;
     if (surveyData[stepNum].isPosting) {
       Connector.start(
         this.surveyID,
         this.surveyResponse, 
         {'Auth-Token': 'foo'}, 
-        (res) => {console.info(res)}, 
-        (res) => {console.error(res)}
+        (surveyID) => {
+          this.handleSubmitSuccess(surveyID);
+        }, 
+        this.handleSubmitFailure.bind(this),
       );
     }
     if (surveyData[stepNum].isFinalStep) {
@@ -84,13 +98,16 @@ class DetroitUsabilitySurvey extends HTMLElement {
   }
 
   handleSubmit() {
-    this.isSubmitted = true;
+    this.isLoading = true;
     Connector.start(
       this.surveyID,
       this.surveyResponse, 
       {'Auth-Token': 'foo'}, 
-      (res) => {console.info(res)}, 
-      (res) => {console.error(res)}
+      (surveyID) => {
+        this.handleSubmitSuccess(surveyID);
+        this.isSubmitted = true;
+      }, 
+      this.handleSubmitFailure.bind(this),
     );
     this.render();
   }
