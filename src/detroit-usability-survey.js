@@ -11,6 +11,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.currentStep = 0;
     this.surveyResponse = {};
     this.isSubmitted = false;
+    this.surveyID = null;
 
     const template = document.createElement('template');
     // TODO: Audit the HTML for accessibility.
@@ -68,6 +69,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.surveyResponse[stepNum] = value;
     if (surveyData[stepNum].isPosting) {
       Connector.start(
+        this.surveyID,
         this.surveyResponse, 
         {'Auth-Token': 'foo'}, 
         (res) => {console.info(res)}, 
@@ -84,6 +86,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
   handleSubmit() {
     this.isSubmitted = true;
     Connector.start(
+      this.surveyID,
       this.surveyResponse, 
       {'Auth-Token': 'foo'}, 
       (res) => {console.info(res)}, 
