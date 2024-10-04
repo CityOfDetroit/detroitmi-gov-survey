@@ -63,7 +63,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
   changeStep(step) {
     this.currentStep += step;
-    this.render(surveyData);
+    this.render();
   }
 
   handleSubmitSuccess(surveyID) {
@@ -91,7 +91,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
       );
     }
     if (surveyData[stepNum].isFinalStep) {
-      this.renderNavigationButtons();
+      this.render();
     } else {
       this.changeStep(1);
     }
