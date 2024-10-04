@@ -74,6 +74,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
   handleSubmitFailure(error) {
     this.isLoading = false;
     console.error(error);
+    this.render();
   }
 
   handleFormChange(stepNum, value) {
@@ -86,6 +87,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
         {'Auth-Token': 'foo'}, 
         (surveyID) => {
           this.handleSubmitSuccess(surveyID);
+          this.render();
         }, 
         this.handleSubmitFailure.bind(this),
       );
@@ -106,10 +108,22 @@ class DetroitUsabilitySurvey extends HTMLElement {
       (surveyID) => {
         this.handleSubmitSuccess(surveyID);
         this.isSubmitted = true;
+        this.render();
       }, 
       this.handleSubmitFailure.bind(this),
     );
     this.render();
+  }
+
+  removeFormAndNavigation() {
+    const surveyContainer = this.shadowRoot.querySelector('.survey-body')
+    if (surveyContainer.contains(this.formContainer)) {
+      surveyContainer.removeChild(this.formContainer);
+    }
+
+    if (surveyContainer.contains(this.navigationContainer)) {
+      surveyContainer.removeChild(this.navigationContainer);
+    }
   }
 
   renderNavigationButtons() {
@@ -138,26 +152,19 @@ class DetroitUsabilitySurvey extends HTMLElement {
   }
 
   renderConfirmation() {
-    const surveyContainer = this.shadowRoot.querySelector('.survey-body')
-    if (surveyContainer.contains(this.formContainer)) {
-      surveyContainer.removeChild(this.formContainer);
-    }
-
-    if (surveyContainer.contains(this.navigationContainer)) {
-      surveyContainer.removeChild(this.navigationContainer);
-    }
-
     const confirmation = document.createElement('div');
     confirmation.classList.add('survey-confirmation');
     confirmation.innerHTML = `
       <p class="fw-bold">Thank you for sharing your feedback!</p>
       <p>Your responses have been submitted.</p>
     `;
+    const surveyContainer = this.shadowRoot.querySelector('.survey-body')
     surveyContainer.appendChild(confirmation);
   }
 
   render() {
     if (this.isSubmitted) {
+      this.removeFormAndNavigation();
       this.renderConfirmation();
       return;
     }
