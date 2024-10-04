@@ -87,16 +87,16 @@ class DetroitUsabilitySurvey extends HTMLElement {
         {'Auth-Token': 'foo'}, 
         (surveyID) => {
           this.handleSubmitSuccess(surveyID);
-          this.render();
+          if (surveyData[stepNum].isFinalStep) {
+            this.render();
+          } else {
+            this.changeStep(1);
+          }
         }, 
         this.handleSubmitFailure.bind(this),
       );
     }
-    if (surveyData[stepNum].isFinalStep) {
-      this.render();
-    } else {
-      this.changeStep(1);
-    }
+    this.render();
   }
 
   handleSubmit() {
@@ -147,6 +147,10 @@ class DetroitUsabilitySurvey extends HTMLElement {
   }
 
   renderConfirmation() {
+    if (!this.isSubmitted) {
+      return;
+    }
+
     const confirmation = document.createElement('div');
     confirmation.classList.add('survey-confirmation');
     confirmation.innerHTML = `
@@ -155,6 +159,27 @@ class DetroitUsabilitySurvey extends HTMLElement {
     `;
     const surveyContainer = this.shadowRoot.querySelector('.survey-body')
     surveyContainer.appendChild(confirmation);
+  }
+
+  renderLoading() {
+    const surveyContainer = this.shadowRoot.querySelector('.survey-body')
+    let spinnerOverlay = surveyContainer.querySelector('.spinner-overlay');
+
+    if (!this.isLoading) {
+      if (spinnerOverlay) {
+        surveyContainer.removeChild(spinnerOverlay);
+      }
+      return;
+    }
+
+    spinnerOverlay = document.createElement('div');
+    spinnerOverlay.classList.add('spinner-overlay');
+    spinnerOverlay.innerHTML = `
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    `;
+    surveyContainer.appendChild(spinnerOverlay);
   }
 
   renderForm() {
@@ -202,10 +227,8 @@ class DetroitUsabilitySurvey extends HTMLElement {
   render() {
     this.renderForm();
     this.renderNavigationButtons();
-
-    if (this.isSubmitted) {
-      this.renderConfirmation();
-    }
+    this.renderConfirmation();
+    this.renderLoading();
   }
 }
 
