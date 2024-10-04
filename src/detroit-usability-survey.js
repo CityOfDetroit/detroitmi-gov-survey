@@ -115,22 +115,17 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.render();
   }
 
-  removeFormAndNavigation() {
-    const surveyContainer = this.shadowRoot.querySelector('.survey-body')
-    if (surveyContainer.contains(this.formContainer)) {
-      surveyContainer.removeChild(this.formContainer);
-    }
-
-    if (surveyContainer.contains(this.navigationContainer)) {
-      surveyContainer.removeChild(this.navigationContainer);
-    }
-  }
-
   renderNavigationButtons() {
-    this.navigationContainer.innerHTML = ''; // Clear previous buttons
-
     const { isFinalStep } = surveyData[this.currentStep];
     const hasResponse = !!this.surveyResponse[this.currentStep];
+
+    if (this.isSubmitted) {
+      const surveyContainer = this.shadowRoot.querySelector('.survey-body')
+      if (surveyContainer.contains(this.navigationContainer)) {
+        surveyContainer.removeChild(this.navigationContainer);
+      }
+      return;
+    }
 
     if (this.currentStep > 0) {
       this.navigationContainer.appendChild(this.prevBtn);
@@ -162,10 +157,12 @@ class DetroitUsabilitySurvey extends HTMLElement {
     surveyContainer.appendChild(confirmation);
   }
 
-  render() {
+  renderForm() {
     if (this.isSubmitted) {
-      this.removeFormAndNavigation();
-      this.renderConfirmation();
+      const surveyContainer = this.shadowRoot.querySelector('.survey-body')
+      if (surveyContainer.contains(this.formContainer)) {
+        surveyContainer.removeChild(this.formContainer);
+      }
       return;
     }
 
@@ -200,8 +197,15 @@ class DetroitUsabilitySurvey extends HTMLElement {
           break;
       }
     }
+  }
 
+  render() {
+    this.renderForm();
     this.renderNavigationButtons();
+
+    if (this.isSubmitted) {
+      this.renderConfirmation();
+    }
   }
 }
 
