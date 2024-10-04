@@ -9,10 +9,11 @@ class DetroitUsabilitySurvey extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this.currentStep = 0;
+    this.surveyID = null;
     this.surveyResponse = {};
     this.isLoading = false;
     this.isSubmitted = false;
-    this.surveyID = null;
+    this.isError = false;
 
     const template = document.createElement('template');
     // TODO: Audit the HTML for accessibility.
@@ -73,6 +74,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
   handleSubmitFailure(error) {
     this.isLoading = false;
+    this.isError = true;
     console.error(error);
     this.render();
   }
@@ -119,7 +121,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     const { isFinalStep } = surveyData[this.currentStep];
     const hasResponse = !!this.surveyResponse[this.currentStep];
 
-    if (this.isSubmitted) {
+    if (this.isSubmitted || this.isError) {
       const surveyContainer = this.shadowRoot.querySelector('.survey-body')
       if (surveyContainer.contains(this.navigationContainer)) {
         surveyContainer.removeChild(this.navigationContainer);
@@ -161,6 +163,21 @@ class DetroitUsabilitySurvey extends HTMLElement {
     surveyContainer.appendChild(confirmation);
   }
 
+  renderError() {
+    if (!this.isError) {
+      return;
+    }
+
+    const errorMessage = document.createElement('div');
+    errorMessage.classList.add('survey-confirmation');
+    errorMessage.innerHTML = `
+      <p class="fw-bold">Sorry, there's been an issue with the survey.</p>
+      <p>Please refresh the page and try again later.</p>
+    `;
+    const surveyContainer = this.shadowRoot.querySelector('.survey-body')
+    surveyContainer.appendChild(errorMessage);
+  }
+
   renderLoading() {
     const surveyContainer = this.shadowRoot.querySelector('.survey-body')
     let spinnerOverlay = surveyContainer.querySelector('.spinner-overlay');
@@ -183,7 +200,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
   }
 
   renderForm() {
-    if (this.isSubmitted) {
+    if (this.isSubmitted || this.isError) {
       const surveyContainer = this.shadowRoot.querySelector('.survey-body')
       if (surveyContainer.contains(this.formContainer)) {
         surveyContainer.removeChild(this.formContainer);
@@ -228,6 +245,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.renderForm();
     this.renderNavigationButtons();
     this.renderConfirmation();
+    this.renderError();
     this.renderLoading();
   }
 }
