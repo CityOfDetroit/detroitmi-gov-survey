@@ -91,7 +91,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
   handleFormChange(stepNum, value) {
     this.isLoading = true;
-    this.surveyResponse[stepNum] = value;
+    this.surveyResponse[surveyData[stepNum].id] = value;
     if (surveyData[stepNum].isPosting) {
       Connector.start(
         this.surveyID,
@@ -131,7 +131,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
   renderNavigationButtons() {
     const { isFinalStep } = surveyData[this.currentStep];
-    const hasResponse = !!this.surveyResponse[this.currentStep];
+    const hasResponse = !!this.surveyResponse[surveyData[this.currentStep].id];
 
     if (this.isSubmitted || this.isError) {
       const surveyContainer = this.shadowRoot.querySelector('.survey-body')
@@ -230,7 +230,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
           const radioForm = createRadioElement(
             this.currentStep, 
             item, 
-            this.surveyResponse[this.currentStep], 
+            this.surveyResponse[surveyData[this.currentStep].id],
             this.handleFormChange.bind(this),
           );
           this.formContainer.appendChild(radioForm);
@@ -240,7 +240,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
           const selectForm = createSelectElement(
             this.currentStep, 
             item, 
-            this.surveyResponse[this.currentStep], 
+            this.surveyResponse[surveyData[this.currentStep].id],
             this.handleFormChange.bind(this),
           );
           this.formContainer.appendChild(selectForm);

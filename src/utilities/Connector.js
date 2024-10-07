@@ -3,7 +3,7 @@
 // const SURVEY_NAME = 'detroitmi_usability';
 const SURVEY_NAME = 'test_survey';
 const API_URL = `https://apis.detroitmi.gov/surveys/${SURVEY_NAME}/`;
-const TEST_RESPONSE = '{"survey_id": "2"}';
+const TEST_RESPONSE = {"survey_id": "2"};
 
 export default class Connector {
   static formatData(surveyID, rawData, elapsedTime) {
@@ -16,20 +16,17 @@ export default class Connector {
       formattedData.survey_id = surveyID;
     }
 
-    for (let stepNum in rawData) {
-      if (rawData.hasOwnProperty(stepNum)) {
-        // TODO: Change stepNum to a more description string.
-        formattedData.answers[`question_${stepNum}`] = rawData[stepNum];
-      }
+    for (let stepID in rawData) {
+      formattedData.answers[`question_${stepID}`] = rawData[stepID];
     }
 
-    formattedData.answers['question_timespent_seconds'] = elapsedTime;
+    formattedData.answers['metadata_timespent_seconds'] = elapsedTime;
 
     if (typeof window !== 'undefined' && window.location) {
-      formattedData.answers['question_url'] = window.location.href;
+      formattedData.answers['metadata_url'] = window.location.href;
     }
 
-    return JSON.stringify(formattedData);
+    return formattedData;
   }
 
   static buildRequest(surveyID, rawData, elapsedTime, credentials){
@@ -49,14 +46,10 @@ export default class Connector {
     let request = Connector.buildRequest(surveyID, rawData, elapsedTime, credentials);
     fetch(request)
       .then(res => {
-        // if (!res.ok) {
-        //     throw new Error(`Failed to post survey data. HTTP status ${res.status}. Message: ${res.statusText}`);
-        // }
-        // return res.json();
-        // TODO: Remove this line when the API is ready.
-        return new Promise((resolve) => {
-            resolve({ survey_id: '123' });
-        });
+        if (!res.ok) {
+            throw new Error(`Failed to post survey data. HTTP status ${res.status}. Message: ${res.statusText}`);
+        }
+        return res.json();
       })
       .then(data => {
         success(data.survey_id);
