@@ -15,6 +15,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     this.isLoading = false;
     this.isSubmitted = false;
     this.isError = false;
+    this.elapsedTimeSec = 0; // Initialize time spent variable
 
     const template = document.createElement('template');
     // TODO: Audit the HTML for accessibility.
@@ -52,6 +53,14 @@ class DetroitUsabilitySurvey extends HTMLElement {
 
   connectedCallback() {
     this.render();
+    this.elapsedTimeSec = 0; // Initialize time spent when component is connected
+    this.timeInterval = setInterval(() => {
+      this.elapsedTimeSec += 1;
+    }, 1000);
+  }
+
+  disconnectedCallback() {
+    clearInterval(this.timeInterval); // Clear interval when component is disconnected
   }
 
   createButton(id, type, text, onClick) {
@@ -87,6 +96,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
       Connector.start(
         this.surveyID,
         this.surveyResponse, 
+        this.elapsedTimeSec,
         authToken,
         (surveyID) => {
           this.handleSubmitSuccess(surveyID);
@@ -107,6 +117,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     Connector.start(
       this.surveyID,
       this.surveyResponse, 
+      this.elapsedTimeSec,
       authToken,
       (surveyID) => {
         this.handleSubmitSuccess(surveyID);
