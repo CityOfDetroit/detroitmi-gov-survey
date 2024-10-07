@@ -3,6 +3,7 @@ import bootstrapStyles from './styles/css/bootstrap.base.css';
 import componentStyles from './styles/css/survey/detroitusabilitysurvey.css';
 import surveyData from './formData/usability-form.json';
 import {createRadioElement, createSelectElement} from './utilities/formBuilder.js';
+import authToken from '../local/auth_token.json';
 
 class DetroitUsabilitySurvey extends HTMLElement {
   constructor() {
@@ -86,7 +87,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
       Connector.start(
         this.surveyID,
         this.surveyResponse, 
-        {'Auth-Token': 'foo'}, 
+        authToken,
         (surveyID) => {
           this.handleSubmitSuccess(surveyID);
           if (surveyData[stepNum].isFinalStep) {
@@ -106,7 +107,7 @@ class DetroitUsabilitySurvey extends HTMLElement {
     Connector.start(
       this.surveyID,
       this.surveyResponse, 
-      {'Auth-Token': 'foo'}, 
+      authToken,
       (surveyID) => {
         this.handleSubmitSuccess(surveyID);
         this.isSubmitted = true;
