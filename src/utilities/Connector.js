@@ -47,7 +47,6 @@ export default class Connector {
 
   static start(surveyID, rawData, elapsedTime, credentials, success, fail){
     let request = Connector.buildRequest(surveyID, rawData, elapsedTime, credentials);
-    console.info('Sending request:', request);
     fetch(request)
       .then(res => {
         // if (!res.ok) {
