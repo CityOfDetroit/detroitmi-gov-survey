@@ -50,7 +50,7 @@
     ]
   },
   {
-    "id": "satisfaction",
+    "id": "usefulness",
     "inputType": "radio",
     "legendOrLabel": "How useful was the information on this page?",
     "isPosting": true,
@@ -79,7 +79,7 @@
     ]
   },
   {
-    "id": "purpose",
+    "id": "intent",
     "inputType": "select",
     "legendOrLabel": "What specifically were you looking for?",
     "isPosting": true,
