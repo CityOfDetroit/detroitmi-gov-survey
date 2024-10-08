@@ -18,7 +18,7 @@
   "homepage": "https://github.com/CityOfDetroit/detroitmi-gov-survey#readme",
   "scripts": {
     "build": "yarn build:sass && yarn build:app",
-    "build:sass": "sass ./src/styles/scss/:./src/styles/css/",
+    "build:sass": "sass ./src/styles/scss/:./src/styles/css/ && ./scripts/postprocess_css.sh",
     "build:app": "webpack --mode production",
     "start": "webpack serve --mode development"
   },
