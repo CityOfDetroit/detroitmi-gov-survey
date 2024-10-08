@@ -1,7 +1,7 @@
 'use strict';
 
-// const SURVEY_NAME = 'detroitmi_usability';
-const SURVEY_NAME = 'test_survey';
+const SURVEY_NAME = 'detroitmi_usability';
+// const SURVEY_NAME = 'test_survey';
 const API_URL = `https://apis.detroitmi.gov/surveys/${SURVEY_NAME}/`;
 const TEST_RESPONSE = {"survey_id": "2"};
 
